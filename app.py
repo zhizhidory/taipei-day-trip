@@ -99,6 +99,31 @@ def attractions_api():
 		con.close()
 	return data
 
+@app.route("/api/categories", methods=["GET"])
+def categories_api():
+	con=pool.get_connection()
+	cursor=con.cursor()
+	sql="SELECT DISTINCT category FROM attractions"
+	try:
+		cursor.execute(sql)
+		result=cursor.fetchall()
+		categoriesList=[]
+		for n in result:
+			categoriesList.append(n[0])
+		data={
+			"data": 
+				categoriesList	
+		}
+	except Exception as e:
+		data={
+			"error":True,
+			"message":e.__class__.__name__+str(e)
+		}
+	finally:
+		cursor.close()
+		con.close()
+	return data
+
 
 # Pages
 @app.route("/")
