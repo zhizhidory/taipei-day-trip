@@ -17,6 +17,42 @@ pool=mysql.connector.pooling.MySQLConnectionPool(
 	**dbconfig
 )
 
+@app.route("/api/attraction/<id>", methods=["GET"])
+def attractionID_api(id):
+	con=pool.get_connection()
+	cursor=con.cursor(dictionary=True, buffered=True)	
+	attSql="SELECT att_id AS id, name, category, description, address, transport, mrt, lat, lng FROM attractions WHERE att_id=%s"
+	imageSql="SELECT url FROM images WHERE att_id=%s"
+	result=None
+	try:
+		id=int(id)
+		cursor.execute(attSql, [id])
+		result=cursor.fetchone()
+		if result:
+			cursor=con.cursor()
+			cursor.execute(imageSql, [id])
+			image=cursor.fetchall()
+			image=list(list(items) for items in list(image))
+			image=sum(image, [])
+			result["image"]=image
+		data={
+			"data": result
+		}
+	except ValueError:
+		data={
+			"error":True,
+			"message":"景點編號錯誤"
+		}
+	except Exception as e:
+		data={
+			"error":True,
+			"message":e.__class__.__name__+str(e)
+		}
+	finally:
+		cursor.close()
+		con.close()
+	return data
+
 @app.route("/api/attractions", methods=["GET"])
 def attractions_api():
 	con=pool.get_connection()
