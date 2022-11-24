@@ -1,6 +1,8 @@
 from flask import *
+from flask_cors import CORS
 import mysql.connector.pooling
 app=Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
@@ -140,6 +142,6 @@ def thankyou():
 	return render_template("thankyou.html")
 
 
-app.run(port=3000)
+app.run(port=3000, debug=True)
 
 	
