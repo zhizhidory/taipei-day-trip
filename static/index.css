@@ -27,19 +27,19 @@ header{
     font-weight: 700;
 }
 .right{
-    font-size: 16px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     flex:auto;
-
 }
 .right>button{
     color: #666666;
-    box-sizing: border-box;
     border: 0;
     background-color: #fff;
-
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px;
+    text-align: center;
 }
 .backgroud{
     background-image: url(welcome.png);
