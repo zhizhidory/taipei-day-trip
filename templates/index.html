@@ -37,6 +37,7 @@
             </div>
         </footer>
         <script>
+            let isLoading=false
             fetch("http://3.114.72.60:3000/api/categories").then(function(response){
                     return response.json();
             }).then(function(data){
@@ -130,9 +131,9 @@
                     text.textContent=data[i].mrt;
                     text2.textContent=data[i].category;
                     titletext.appendChild(text);
-                    titletext.appendChild(text2);
-
-                }
+                    titletext.appendChild(text2);}
+                    isLoading=false
+                
             })
             };
             const options = {
@@ -141,10 +142,9 @@
             }
 
             const callback = ([entry]) => {
-            if (entry && entry.isIntersecting && page!=null ) {
+            if (entry && entry.isIntersecting && page!=null && !isLoading ) {
+                isLoading=true
                 fetchdata()
-                console.log(page)
-
             }
             }
 
