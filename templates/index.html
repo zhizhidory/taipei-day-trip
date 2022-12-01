@@ -8,9 +8,9 @@
     </head>
     <body>
         <header >
-            <div class="frame">
-                <div class="left">台北一日遊</div>
-                <div class="right">
+            <div class="nav">
+                <div class="leftnav">台北一日遊</div>
+                <div class="rightnav">
                     <button >預定行程</button>
                     <button >登入/註冊</button>
                 </div>
@@ -28,51 +28,49 @@
 
             </div>
         </div>
-        <div class="outer">
+        <div class="section">
             <div class="container"></div> 
         </div>
         <footer>
-            <div>
-                COPYRIGHT © 2021 台北一日遊
-            </div>
+            <div>COPYRIGHT © 2021 台北一日遊</div>
         </footer>
         <script>
             let isLoading=false
+            const input=document.querySelector("input")
+            const searchbar=document.querySelector(".searchbar")
+            const body=document.querySelector("body")
+            const container=document.querySelector(".container");
             fetch("http://3.114.72.60:3000/api/categories").then(function(response){
                     return response.json();
             }).then(function(data){
-                let categories=data.data
-                let searchbar=document.querySelector(".searchbar")
+                const categories=data.data
                 searchbar.addEventListener("click",tapCategory)
                 for(let n=0;n<categories.length;n++){
-                let category=document.createElement("div")
-                category.className="category"
-                category.textContent=categories[n]
-                searchbar.appendChild(category)
-            }
+                    let category=document.createElement("div")
+                    category.className="category"
+                    category.textContent=categories[n]
+                    searchbar.appendChild(category)
+                }
             })
             function tapCategory(e){
-                let input=document.querySelector("input");
                 input.value=e.target.textContent
             }
-            let input=document.querySelector("input")
+
             input.addEventListener("click",tapInput)
             function tapInput(e){
                 e.stopPropagation()
-                let searchbar=document.querySelector(".searchbar")
                 searchbar.style.display="grid"
             }
-            let body=document.querySelector("body")
+
             body.addEventListener("click",tapanyway)
             function tapanyway(e){
-                let searchbar=document.querySelector(".searchbar")
                 searchbar.style.display="none"
             }
+
             let page=0
             search = function (){
-                let container=document.querySelector(".container");
-                observer.unobserve(loadingObserver)
                 let keyword=document.querySelector("#keyword").value;
+                observer.unobserve(loadingObserver)
                 container.innerHTML="";
                 let data=[]
                 page=0
@@ -81,8 +79,8 @@
                 }).then(function(totaldata){
                 data=totaldata.data
                   if (data && data.length){
-                page=0 
-                observer.observe(loadingObserver);            
+                    page=0 
+                    observer.observe(loadingObserver);            
                 }else{
                     let nodata=document.createElement("div")
                     nodata.textContent="沒有符合結果，請重新查詢"
@@ -98,17 +96,16 @@
                     return response.json();
             }).then(function(totaldata){
                 let data=totaldata.data
-                page=totaldata.nextPage;                
-                let container=document.querySelector(".container");
                 for (let i=0; i<data.length ;i++){
                     http=data[i].image
-                    let box=document.createElement("div");
+                    let box=document.createElement("a")
                     let name = document.createElement('div');
                     let nametext = document.createElement('div');
                     box.className="box";
-                    box.id="photo"+((page-1)*12+i);
+                    box.href="/attraction/"+parseInt(data[i].id)                   
+                    box.id="photo"+((page)*12+i);
                     container.appendChild(box);
-                    let boxid=document.querySelector("#photo"+((page-1)*12+i));
+                    let boxid=document.querySelector("#photo"+((page)*12+i));
                     let img = document.createElement('img');
                     img.src=http[0];
                     boxid.appendChild(img);
@@ -120,10 +117,10 @@
 
                     let titlei = document.createElement('div');
                     titlei.className="title";
-                    titlei.id="title"+((page-1)*12+i);
+                    titlei.id="title"+((page)*12+i);
                     boxid.appendChild(titlei);
 
-                    let titletext=document.querySelector("#title"+((page-1)*12+i))
+                    let titletext=document.querySelector("#title"+((page)*12+i))
                     let text=document.createElement("div")
                     let text2=document.createElement("div")
                     text.className="titletext"
@@ -131,11 +128,13 @@
                     text.textContent=data[i].mrt;
                     text2.textContent=data[i].category;
                     titletext.appendChild(text);
-                    titletext.appendChild(text2);}
-                    isLoading=false
-                
-            })
-            };
+                    titletext.appendChild(text2);
+                }
+                    isLoading=false  
+                    page=totaldata.nextPage;  
+            }
+            )};
+
             const options = {
             rootMargin: '0px 0px 200px 0px',
             threshold: 0.5
@@ -145,16 +144,10 @@
             if (entry && entry.isIntersecting && page!=null && !isLoading ) {
                 isLoading=true
                 fetchdata()
-            }
-            }
+            }}
 
             let observer = new IntersectionObserver(callback, options)
             observer.observe(loadingObserver);
-  
-
-
-        </script>  
-
-       
+        </script>   
     </body>
 </html>
