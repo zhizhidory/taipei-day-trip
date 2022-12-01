@@ -157,6 +157,9 @@ hr{
     color: #666666;
     font-weight: 500;
 }
+input[type="date"]{
+    padding: 5px 10px;
+}
 label{
     cursor: pointer;
     display: inline-block;
