@@ -1,0 +1,333 @@
+html, 
+body{
+    padding: 0;
+    margin: 0;
+}
+header{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    height: 54px;
+    width: 100%;
+    align-items: center;
+    background-color: #fff;
+    margin: 0 auto;
+    z-index: 3;
+}
+.nav{
+    display:flex;
+    width: 1200px;
+    height: 34px;
+}
+.leftnav{
+    height: 34px;
+    font-size: 30px;
+    color: #448899;
+    font-weight: 700;
+}
+.rightnav{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex:auto;
+}
+.rightnav>button{
+    color: #666666;
+    border: 0;
+    background-color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+article+article{
+    width: 1200px;
+    margin-top: 40px;
+    margin-bottom: 120px;
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+}
+article+article>div{
+    margin: 10px;
+    color: #666666;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 23px;
+}
+main{
+    position: relative;
+    top:94px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+article{ 
+    justify-content: center;
+    align-items: center;
+    display: flex;  
+    flex-direction: column;
+}
+.sectioncontent{
+    display: flex;
+    width: 1200px;
+    height: 400px;
+    justify-content: center;
+}
+hr{
+    margin-top: 40px;
+    width: 1200px;
+    border: 1px solid #E8E8E8;
+}
+.imgcontainer{
+    width: 540px;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin: 0 15px;
+}
+.img{
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 2s;
+    animation-name: fade;
+    animation-duration: 2s;
+}
+.prev{
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    opacity: 0.75;
+    left: 10px;
+}
+.prev:hover,
+.next:hover{
+    opacity: 1;
+}
+.next{
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    opacity: 0.75;
+    right: 10px;
+}
+.dotcontainer{
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    line-height: 12px;
+}
+.dot{
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+    margin: 0 6px;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.75;
+    box-sizing: border-box;
+
+}
+.activedot{
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid #fff;
+    height: 12px;
+    width: 12px;
+    margin: 0 6px;
+    border-radius: 50%;
+    background-color: #000000;
+    opacity: 0.75;
+}
+.name{
+    font-size: 24px;
+    font-weight: 700;
+    color: #666666;
+    margin-bottom: 15px;
+}
+.mrtcategory{
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #666666;
+    font-weight: 500;
+}
+label{
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    position: relative;
+    padding-left:25px;
+    margin-left: -13px;
+}
+input[type="radio"]{
+    opacity: 0;
+  }
+input:checked+label:before,input[type="radio"]+label:before {
+    content: "";
+    height: 22px;
+    width: 22px;
+    display: block;
+    border: 0;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+input[type="radio"]:checked+label:after {
+    content: "";
+    display: block;
+    height: 18px;
+    width: 18px;
+    border-radius:50%;
+    top: 2px;
+    left:2px;
+    position: absolute;
+    background-color: #448899;
+}
+.radio{
+    display: inline-block;
+    color: #666666;
+    font-size: 16px;
+    font-weight: 500;
+}
+.cost{
+    font-weight: 500;
+    font-size: 16px;
+    color: #666666;
+}
+.bookingblock{
+    display: flex;
+    flex-grow: 1;
+    height: 400px;
+    padding: 0;
+    flex-direction: column;
+    margin: 0 15px;
+}
+.booking{
+    border-radius: 5px;
+    background-color: #E8E8E8;
+    padding: 0 20px;
+    box-sizing: border-box;
+    flex-grow: 1;
+}
+.addressTitle,
+.transportTitle{
+    font-size: 16px;
+    font-weight: 700;
+    color: #666666;
+    height: 32px;
+    margin: 0;
+}
+.boldtext{
+    margin-top: 15px ;
+    font-size: 16px;
+    font-weight: 700;
+    color: #666666;
+}
+.bookingtext{
+    margin-top: 15px ;
+    color: #666666;
+    font-size: 16px;
+    font-weight: 500;
+}
+.bookingButton{
+    background-color: #448899;
+    color: #fff;
+    border: 0;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-top: 25px  ;
+    line-height: 19px;
+    font-size: 19px;
+    font-weight: 400;
+    width: 154px;
+    height: 36px;
+    cursor: pointer;
+}
+.bookingButton:hover{
+    background-color: #236778;
+}
+footer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #757575;
+    height: 104px;
+    top:94px;
+    position: relative;
+} 
+footer>div{
+    font-weight: 700;
+    color: #fff;
+}
+.prev,
+.next,
+.dotcontainer{
+    z-index: 1;
+}
+ 
+@-webkit-keyframes fade {
+    from {opacity: 0.4}
+    to {opacity: 1}
+}
+
+@keyframes fade {
+    from {opacity: 0.4}
+    to {opacity: 1}
+}
+
+@media (max-width:1200px){
+    .nav{margin: 10px;}
+    article+article{
+        width: 95%;
+    } 
+    article{
+        width: 100%;
+    }
+    hr,
+    .sectioncontent{
+        width: 98%;       
+    } 
+    .imgcontainer{
+        width: 50%;;
+    }
+    
+
+}
+@media (max-width:600px){
+    main{
+        top: 54px;
+    }
+    .sectioncontent{
+        flex-wrap: wrap;
+        height: auto;
+    }
+    .imgcontainer{
+        width: 100%;
+        height: 350px;
+        margin: 0;
+    }
+    .bookingblock{
+        margin:20px 10px 0 10px;
+    }
+    .booking{
+        height: 300px;
+        flex-grow: 0;
+    }
+
+}
+
+
+
+
+
+
+

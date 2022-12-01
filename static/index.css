@@ -15,24 +15,24 @@ header{
     z-index: 3;
 
 }
-.frame{
+.nav{
     display:flex;
     width: 1200px;
     height: 34px;
 }
-.left{
+.leftnav{
     height: 34px;
     font-size: 30px;
     color: #448899;
     font-weight: 700;
 }
-.right{
+.rightnav{
     display: flex;
     justify-content: flex-end;
     align-items: center;
     flex:auto;
 }
-.right>button{
+.rightnav>button{
     color: #666666;
     border: 0;
     background-color: #fff;
@@ -40,6 +40,7 @@ header{
     font-weight: 500;
     padding: 10px;
     text-align: center;
+    cursor: pointer;
 }
 .backgroud{
     background-image: url(welcome.png);
@@ -62,7 +63,6 @@ header{
     display: flex;
     flex-direction: column;
     padding: 10px;
-    /* box-sizing: border-box; */
     margin: 10px;
 }
 .text1{
@@ -70,23 +70,23 @@ header{
     font-weight: 700;
     height: 41px;
     text-shadow: 0px 0px 30px #AABBCC;
-    margin-bottom: 15px;
 }
 .text2{
     font-size: 16px;
     height: 22px;
     font-weight: bold;
-    margin-bottom: 25px;
+    margin-top: 25px;
 }
 .search{
     display: flex;
     width: 460px;
     top:103px;
+    margin-top: 25px;
     margin-bottom: 0;
   }
   
 input {
-    font-weight: 700;
+    color: #666666;
     width: 400px;
     height: 46px;
     background-color:#fff;
@@ -95,8 +95,8 @@ input {
     border-radius: 5px 0 0 5px;
     padding: 0 0 0 15px;
     filter: drop-shadow(0px 0px 20px #AABBCC);
-
   }
+
 .search>button {
     height: 46px;
     width: 60px;
@@ -127,7 +127,8 @@ input {
 }
 .category:hover{
     background-color: #E8E8E8;
-    border-radius: 5px
+    border-radius: 5px;
+    cursor:pointer;
 }
 footer{
     display: flex;
@@ -154,7 +155,7 @@ footer>div{
     justify-content: center;
     margin: 55px 0;
 }
-.outer{
+.section{
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -194,6 +195,10 @@ footer>div{
     border: 1px solid #E8E8E8;
     border-radius: 5px;
     box-sizing: border-box;
+    cursor: pointer;
+}
+.box:hover{
+    transform: scale(1.03);
 }
 
 .title{
@@ -214,15 +219,8 @@ footer>div{
     color:#757575;
     font-weight: 500;
 }
-.observer {
-    margin: 15px auto;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #60A917;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 2s linear infinite;
-  }
+
+
 @media (max-width:1200px){
     .container{
         width: 90%; 
@@ -233,7 +231,7 @@ footer>div{
         grid-template-areas: "p1 p2";
         justify-content: center;
     } 
-    .frame{margin: 10px;}  
+    .nav{margin: 10px;}  
 }
 @media (max-width:600px){
     .searchbar{

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8"/>
+        <title>台北一日遊-景點介紹</title>  
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='attraction.css') }}" /> 
+    </head>
+    <body>
+        <header>
+            <div class="nav">
+                <div class="leftnav">台北一日遊</div>
+                <div class="rightnav">
+                    <button>預定行程</button>
+                    <button>登入/註冊</button>
+                </div>
+            </div>
+        </header>
+        <main>
+            <article>
+                <section class="sectioncontent">
+                    <div class="imgcontainer">
+                        <img class="prev"  src="{{ url_for('static', filename='/Button/btn_leftArrow.png') }}"/>
+                        <img class="next"  src="{{ url_for('static', filename='/Button/btn_rightArrow.png') }}"/>
+                        <div class="dotcontainer"></div>
+                    </div>
+                    <div class="bookingblock">
+                        <div class="name"></div>
+                        <div class="mrtcategory"></div>
+                        <div class="booking">
+                            <div class="boldtext">訂購導覽行程</div>
+                            <div class="bookingtext">以此景點為中心的一日行程，帶您探索城市角落故事</div>
+                            <div class="boldtext">選擇日期:&nbsp;&nbsp;<input type="date"></div>
+                            <div class="boldtext" id="timechoose">選擇時間:
+                                <div class="radio">
+                                    <input type="radio" name="time" id="morning" checked="checked"/><label for="morning">上半天</label>
+                                </div>
+                                <div class="radio">
+                                    <input type="radio" name="time" id="afternoon"/><label for="afternoon">下半天</label>
+                                </div>
+                            </div>
+                            <div class="bookingtext"><span class="boldtext">導覽費用:&nbsp;&nbsp;</span> 
+                                <span id="dollars2000" class="cost">新台幣2000元</span>
+                                <span id="dollars2500" class="cost" hidden>新台幣2500元</span>
+                            </div>
+                            <button class="bookingButton">開始預約行程</button>
+                        </div>
+                    </div>
+                </section>
+                <hr/>
+            </article>
+            <article>
+                <div class="description"></div>
+                <div>
+                    <div class="addressTitle">景點地址:</div>
+                    <div class="address"></div>
+                </div>
+                <div>
+                    <div class="transportTitle">交通方式:</div>
+                    <div class="transport"></div>
+                </div>
+            </article>
+        </main>
+        <footer>
+            <div>COPYRIGHT © 2021 台北一日遊</div>
+        </footer>
+        
+        <script>
+            const timechoose=document.querySelector("#timechoose")
+            radiomorning=document.querySelector("input[name='time']")
+            timechoose.addEventListener("change", function tapradio(){
+                let morningchecked=radiomorning.checked
+                if(!morningchecked){
+                   document.getElementById("dollars2000").hidden=true
+                   document.getElementById("dollars2500").hidden=false
+                }
+                else{
+                    document.getElementById("dollars2000").hidden=false
+                    document.getElementById("dollars2500").hidden=true
+
+                }})
+
+            url="http://3.114.72.60:3000/api"+location.pathname
+            fetch(url).then(function(response){
+                    return response.json();
+            }).then(function(data){
+                const description = document.querySelector(".description")
+                description.textContent = data.data.description
+
+                const address = document.querySelector(".address")
+                address.textContent = data.data.address
+
+                const transport = document.querySelector(".transport")
+                transport.textContent = data.data.transport
+
+                const name = document.querySelector(".name")
+                name.textContent = data.data.name
+
+                const mrtcategory = document.querySelector(".mrtcategory")
+                mrtcategory.textContent = data.data.category+" at "+data.data.mrt
+
+                const imgcontainer = document.querySelector(".imgcontainer")
+                const dotcontainer = document.querySelector(".dotcontainer")
+                const images = data.data.image
+                for(let i = 0; i < images.length; i++) {
+                    let img = document.createElement("img");
+                    img.className = "img";
+                    img.src = data.data.image[i];
+                    imgcontainer.appendChild(img);
+                    let dot = document.createElement("span");
+                    dot.id = "dot";
+                    dotcontainer.appendChild(dot);
+                }
+
+                let slideIndex = 1;
+                showSlides(slideIndex);
+
+                const prev = document.querySelector(".prev")
+                const next = document.querySelector(".next")
+                prev.addEventListener( "click", function(){plusSlides(-1)} )
+                next.addEventListener( "click", function(){plusSlides(1)} )
+                function plusSlides(n) {
+                    showSlides(slideIndex += n);
+                }
+
+                function showSlides(n) {
+                    let slides = document.getElementsByClassName("img");
+                    let dots = document.querySelectorAll("#dot");
+                    if (n > slides.length) { slideIndex = 1 }
+                    if (n < 1) { slideIndex = slides.length }
+                    for (let i = 0; i < slides.length; i++) {
+                        slides[i].style.display = "none";
+                        dots[i].className = "dot";
+                    }
+                    slides[slideIndex - 1].style.display = "block";
+                    dots[slideIndex - 1].className = "activedot";
+                }
+            })
+  
+        </script>   
+    </body>
+</html>
