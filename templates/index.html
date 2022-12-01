@@ -67,11 +67,6 @@
                 searchbar.style.display="none"
             }
 
-            function tapAttraction(e){
-                let attraction=document.getElementById(this.id);
-                attraction.submit()
-            }
-
             let page=0
             search = function (){
                 let keyword=document.querySelector("#keyword").value;
@@ -103,12 +98,11 @@
                 let data=totaldata.data
                 for (let i=0; i<data.length ;i++){
                     http=data[i].image
-                    let box=document.createElement("form");
+                    let box=document.createElement("a")
                     let name = document.createElement('div');
                     let nametext = document.createElement('div');
                     box.className="box";
-                    box.action="/attraction/"+parseInt(data[i].id)
-                    box.method="POST"                    
+                    box.href="/attraction/"+parseInt(data[i].id)                   
                     box.id="photo"+((page)*12+i);
                     container.appendChild(box);
                     let boxid=document.querySelector("#photo"+((page)*12+i));
@@ -135,8 +129,6 @@
                     text2.textContent=data[i].category;
                     titletext.appendChild(text);
                     titletext.appendChild(text2);
-                    box.addEventListener("click",tapAttraction)            
-
                 }
                     isLoading=false  
                     page=totaldata.nextPage;  
