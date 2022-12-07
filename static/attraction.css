@@ -107,6 +107,7 @@ header{
     font-size: 30px;
     color: #448899;
     font-weight: 700;
+    cursor: pointer;
 }
 .rightnav{
     display: flex;
