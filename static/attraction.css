@@ -3,6 +3,89 @@ body{
     padding: 0;
     margin: 0;
 }
+.dataResponse{
+    color: rgb(196, 25, 25);
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.mask{
+    display: none;
+    position: fixed;
+    top:0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    opacity: 0.25;
+    z-index: 4;
+}
+.sign{
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 340px;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0px 4px 60px #AAAAAA;
+    display: none;
+    align-items: center;
+    flex-direction: column;
+    z-index: 5;
+    padding: 15px;
+    box-sizing: border-box;
+}
+.decoratorBar{
+    height: 10px;
+    width: 100%;
+    border-radius: 6px 6px 0 0;
+    top: 0;
+    position:absolute;
+    background: linear-gradient(270deg, #337788 0%, #66AABB 100%);;
+}
+.sign>input{
+    height: 47px;
+    width: 310px;
+    border: 1px solid #cccccc;
+    padding: 15px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+.sign>button{
+    border: 0;
+    font-size: 19px;
+    height: 47px;
+    width: 310px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #448899;
+    color: #fff;
+    cursor: pointer;
+}
+.x{
+    position: absolute;
+    top:27px;
+    right: 17px;
+    cursor: pointer;
+}
+.signText{
+    margin: 15px;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    color: #666666;
+}
+.signLine{
+    font-size: 16px;
+    font-weight: 500;
+    color: #666666;
+}
+.signLine>span{
+    cursor: pointer;
+}
+
+
 header{
     position: fixed;
     display: flex;
@@ -248,7 +331,7 @@ input[type="radio"]:checked+label:after {
     margin-top: 25px  ;
     font-size: 19px;
     font-weight: 400;
-    width: 154px;
+    width: 155px;
     height: 36px;
     cursor: pointer;
 }
