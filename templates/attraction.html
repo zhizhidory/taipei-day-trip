@@ -9,10 +9,11 @@
     <body>
         <header>
             <div class="nav">
-                <div class="leftnav">台北一日遊</div>
+                <div class="leftnav">台北一日遊</a></div>
                 <div class="rightnav">
                     <button>預定行程</button>
-                    <button>登入/註冊</button>
+                    <button id="signUpIn">登入/註冊</button>
+                    <button id="signout">登出系統</button>
                 </div>
             </div>
         </header>
@@ -64,7 +65,29 @@
         <footer>
             <div>COPYRIGHT © 2021 台北一日遊</div>
         </footer>
-        
+        <div class="sign" id="signIn">
+            <div class="decoratorBar"></div>
+            <div class="signText">登入會員帳號</div>
+            <img class="x" src="{{ url_for('static', filename='icon/icon_close.png') }}"/>
+            <input type="email" placeholder="輸入電子信箱" />
+            <input type="password" placeholder="輸入密碼" />
+            <button id="signInButton">登入帳號</button>
+            <div class="dataResponse"></div>
+            <div class="signLine">還沒有帳號？<span id="toSignUp">點此註冊</span></div> 
+        </div>
+        <div class="sign" id="signUp">
+            <div class="decoratorBar"></div>
+            <div class="signText">註冊會員帳號</div>
+            <img class="x" src="{{ url_for('static', filename='icon/icon_close.png') }}"/>
+            <input type="text" placeholder="輸入姓名" id="name" />
+            <input type="email" placeholder="輸入電子信箱" id="email" />
+            <input type="password" placeholder="輸入密碼" id="password" />
+            <button id="signUpButton" >註冊新帳戶</button>
+            <div class="dataResponse"></div>
+            <div class="signLine">已經有帳戶了？<span id="toSignIn">點此登入</span></div> 
+        </div>
+        <div class="mask"></div>
+
         <script>
             const timechoose=document.querySelector("#timechoose")
             radiomorning=document.querySelector("input[name='time']")
