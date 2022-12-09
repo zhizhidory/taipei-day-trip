@@ -1,8 +1,11 @@
 from flask import *
 from flask_cors import CORS
 import mysql.connector.pooling
+import os
 import jwt
 import time
+from dotenv import load_dotenv
+load_dotenv()
 
 app=Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -11,16 +14,18 @@ app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
 dbconfig={
-	"host":"localhost",
-	"user":"root",
-	"password":"5244",
-	"database":"taipei_trip"
+	"host":os.getenv("host"),
+	"user":os.getenv("user"),
+	"password":os.getenv("password"),
+	"database":os.getenv("database")
 }
 pool=mysql.connector.pooling.MySQLConnectionPool(
 	pool_name="taipeipool",
 	pool_size=3,
 	**dbconfig
 )
+jwtkey=os.getenv("key")
+
 
 @app.route("/api/attraction/<id>", methods=["GET"])
 def attractionID_api(id):
@@ -164,8 +169,7 @@ def auth():
 		try:
 			if cookie :
 				token=cookie["token"]
-				key="taipeiDayTripKey"
-				data=jwt.decode(token,key,algorithms='HS256')
+				data=jwt.decode(token,jwtkey,algorithms='HS256')
 				result["data"]=data
 				return result
 			return {"data":None}
@@ -190,8 +194,7 @@ def auth():
 				"name": memberData["name"],
 				"email": memberData["email"],
 			}
-			key="taipeiDayTripKey"
-			token=jwt.encode(payload,key,algorithm ='HS256')
+			token=jwt.encode(payload,jwtkey,algorithm ='HS256')
 			result["ok"]=True
 			result=make_response(result)
 			result.set_cookie(key="token", value=token, expires=time.time()+60*60*24*7)
