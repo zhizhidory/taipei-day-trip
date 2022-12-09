@@ -9,10 +9,11 @@
     <body>
         <header>
             <div class="nav">
-                <div class="leftnav">台北一日遊</div>
+                <div class="leftnav">台北一日遊</a></div>
                 <div class="rightnav">
                     <button>預定行程</button>
-                    <button>登入/註冊</button>
+                    <button id="signUpIn">登入/註冊</button>
+                    <button id="signout">登出系統</button>
                 </div>
             </div>
         </header>
@@ -64,8 +65,144 @@
         <footer>
             <div>COPYRIGHT © 2021 台北一日遊</div>
         </footer>
-        
+        <div class="sign" id="signIn">
+            <div class="decoratorBar"></div>
+            <div class="signText">登入會員帳號</div>
+            <img class="x" src="{{ url_for('static', filename='icon/icon_close.png') }}"/>
+            <input type="email" placeholder="輸入電子信箱" />
+            <input type="password" placeholder="輸入密碼" />
+            <button id="signInButton">登入帳號</button>
+            <div class="dataResponse"></div>
+            <div class="signLine">還沒有帳號？<span id="toSignUp">點此註冊</span></div> 
+        </div>
+        <div class="sign" id="signUp">
+            <div class="decoratorBar"></div>
+            <div class="signText">註冊會員帳號</div>
+            <img class="x" src="{{ url_for('static', filename='icon/icon_close.png') }}"/>
+            <input type="text" placeholder="輸入姓名" id="name" />
+            <input type="email" placeholder="輸入電子信箱" id="email" />
+            <input type="password" placeholder="輸入密碼" id="password" />
+            <button id="signUpButton" >註冊新帳戶</button>
+            <div class="dataResponse"></div>
+            <div class="signLine">已經有帳戶了？<span id="toSignIn">點此登入</span></div> 
+        </div>
+        <div class="mask"></div>
+
         <script>
+            const signout=document.querySelector("#signout")
+            signout.style.display="none"
+            const signUpIn=document.querySelector("#signUpIn")
+            // 檢查登入狀態
+            fetch("/api/user/auth",{
+                method:"GET",
+                credentials: "include",
+                headers:{"Content-Type": "application/json"}
+            }).then(function(response){return response.json()}).then(function(result){
+                if (result.data){
+                    signout.style.display="block"
+                    signUpIn.style.display="none"
+                }
+            })
+            // 點擊登出按鈕
+            signout.addEventListener("click",function(e){
+                fetch("/api/user/auth",{method:"DELETE"}).then(function(response){
+                    return response.json();}).then(function(data){
+                    location.reload();
+                })
+            })
+            // 點擊註冊按鈕
+            const signUpButton=document.querySelector("#signUpButton")
+            const signUpResponse=document.querySelector("#signUp>.dataResponse")
+            signUpButton.addEventListener("click",function(e){
+                let data={}
+                dataResponse.style.display="none"
+                SignUpInput=document.querySelectorAll("#signUp>input")
+                const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+                const inputEmail=SignUpInput[1].value
+                for (let i=0; i<SignUpInput.length; i++){
+                    let inputdata=SignUpInput[i].value
+                    if (!inputdata){
+                        data=null;
+                        break;
+                    }
+                    data[SignUpInput[i].id]=SignUpInput[i].value
+                }
+                // 驗證輸入註冊資料格式不能空白和email格式
+                if(!data || !regex.test(inputEmail)){
+                    signUpResponse.textContent="輸入資料格式有錯";
+                    signUpResponse.style.display="block";
+                    return
+                }
+                // 將註冊資料送到後端
+                fetch("/api/user",{method:"POST", headers:{"Content-Type": "application/json"},
+                body:JSON.stringify(data)}).then(function(response){return response.json();
+                }).then(function(data){
+                    if(data.error){
+                        signUpResponse.style.display="block"
+                        signUpResponse.textContent=data.message
+                        return
+                    }
+                    signUpResponse.style.display="block"
+                    signUpResponse.style.color="black"
+                    signUpResponse.textContent="註冊成功!請重新登入"
+                })
+            })
+            // 點擊登入按鈕
+            const signInButton=document.querySelector("#signInButton")
+            const dataResponse=document.querySelector("#signIn>.dataResponse")
+            signInButton.addEventListener("click", function(){
+                dataResponse.style.display="none"
+                const signInData=document.querySelectorAll("#signIn>input")
+                let data={email:signInData[0].value, password:signInData[1].value}
+                fetch("/api/user/auth", {method:"PUT", headers:{"Content-Type": "application/json"},
+                body:JSON.stringify(data)}).then(function(response){
+                    return response.json()
+                }).then(function(result){
+                    if (result.error){
+                        dataResponse.style.display="block"
+                        dataResponse.textContent="帳號或密碼輸入錯誤"
+                        return
+                    }
+                    location.reload()
+                })
+            })
+
+            const BacktoHome=document.querySelector(".leftnav")
+            BacktoHome.addEventListener("click",function(){
+                location.href="/"
+            })
+
+
+            const mask=document.querySelector(".mask")
+            const signIn=document.querySelector("#signIn")
+            const signUp=document.querySelector("#signUp")
+
+            const toSignUp=document.querySelector("#toSignUp")
+            toSignUp.addEventListener("click",function(){
+                signIn.style.display="none"
+                signUp.style.display="flex"
+            })
+            const toSignIn=document.querySelector("#toSignIn")
+            toSignIn.addEventListener("click",function(){
+                signIn.style.display="flex"
+                signUp.style.display="none"
+            })
+            
+            const signpages=document.querySelectorAll(".sign")
+            signpages.forEach( closepage => {closepage.addEventListener("click", function(e){
+                if (e.target.className == "x"){
+                    this.style.display="none"
+                    mask.style.display="none"
+            }})});
+            signUpIn.addEventListener("click", function(){
+                signIn.style.display="flex"
+                mask.style.display="block"
+            })
+
+
+
+
+
             const timechoose=document.querySelector("#timechoose")
             radiomorning=document.querySelector("input[name='time']")
             timechoose.addEventListener("change", function tapradio(){
