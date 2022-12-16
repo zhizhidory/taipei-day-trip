@@ -31,6 +31,9 @@ def tripbooking():
                 }
             else : 
                 data={"data" : None}
+        except Exception as e:
+            result["error"]=True
+            result["message"]=e.__class__.__name__+str(e)
         finally:
             cursor.close()
             con.close()
@@ -48,6 +51,9 @@ def tripbooking():
             cursor.execute(sql,insertData)
             con.commit()
             result={"ok":True}
+        except Exception as e:
+            result["error"]=True
+            result["message"]=e.__class__.__name__+str(e)
         finally:
             cursor.close()
             con.close()
@@ -60,6 +66,9 @@ def tripbooking():
             cursor.execute("TRUNCATE TABLE booking")
             con.commit()
             result["ok"]=True
+        except Exception as e:
+            result["error"]=True
+            result["message"]=e.__class__.__name__+str(e)
         finally:
             cursor.close()
             con.close()

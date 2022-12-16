@@ -114,7 +114,6 @@
             const bookingButton=document.querySelector(".bookingButton")
             const date=document.querySelector("#date")
             if (!date.value){
-                    console.log("no")
                     bookingButton.disabled=true  
                 }
             date.addEventListener("change",function(e){
@@ -142,12 +141,10 @@
                     }).then(function(response){return response.json();})
                     .then(function(data){
                         if(data.ok){
-                            console.log(data)
                             location.href="/booking"
                         }
                     })
                 }else{
-                    console.log("no")
                     signIn.style.display="flex"
                     mask.style.display="block"
                 }
