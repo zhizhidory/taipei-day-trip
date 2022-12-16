@@ -1,0 +1,238 @@
+html, 
+body{
+    padding: 0;
+    margin: 0;
+}
+header{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    height: 54px;
+    width: 100%;
+    align-items: center;
+    background-color: #fff;
+    margin: 0 auto;
+    z-index: 3;
+}
+.nav{
+    display:flex;
+    width: 1200px;
+    height: 34px;
+}
+.leftnav{
+    height: 34px;
+    font-size: 30px;
+    color: #448899;
+    font-weight: 700;
+    cursor: pointer;
+}
+.rightnav{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex:auto;
+}
+.rightnav>button{
+    color: #666666;
+    border: 0;
+    background-color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+main{
+    position: relative;
+    top:94px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.nodata,
+.headline{
+    width: 1000px;
+    color: #666666;
+    font-weight: 700;
+    font-size: 19px;
+}
+.nodata{
+    font-weight: 500;
+    font-size: 16px;
+    padding-top: 10px;
+}
+article{
+    position: relative;
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+
+}
+.image{
+    width: 250px;
+    height: 200px;
+}
+.image>img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+article>img{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
+}
+.bookingcontent{
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    height: 200px;
+}
+.bookingtext{
+    margin-left: 20px;
+}
+.bookingtext span:not(.name){
+    font-weight: 500;
+    line-height: 13px;
+}
+.title{
+    font-size: 16px;
+    font-weight: 700;
+    color: #448899;
+    margin-bottom: 25px;
+    position: relative;
+}
+.booking_detail{
+    margin-bottom: 20px;
+    color: #757575;
+    font-weight: 700;
+    font-size: 16px;
+}
+hr{
+    border: 1px solid #E8E8E8;
+    width: 1000px;
+    margin: 40px 0;
+}
+.user_information{
+    font-size: 19px;
+    font-weight: 700;
+    color: #666666;
+    margin-bottom: 30px;
+}
+label{
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #666666;
+}
+input{
+    height: 38px;
+    width: 200px;
+    border: 1px solid #cccccc;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+.notice{
+    font-size: 16px;
+    font-weight: 700;
+    color: #666666;
+}
+.confirmOrder{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.total_price{
+    text-align: center;
+    width: 173px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #666666;
+}
+.confirmOrder>button{
+    background-color: #448899;
+    color: #fff;
+    border: 0;
+    border-radius: 5px;
+    margin-top: 25px  ;
+    font-size: 19px;
+    width: 173px;
+    height: 36px;
+    cursor: pointer;
+}
+footer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #757575;
+    min-height: 104px;
+    margin-top: 60px;
+    top:94px;
+    position: relative;
+} 
+.footer_nodata{
+    padding-top: 45px;
+    height: 865px;
+    align-items: flex-start;
+}
+footer>div{
+    font-weight: 700;
+    color: #fff;
+}
+
+
+
+@media (max-width:1200px){
+    .nav{margin: 10px;}
+    hr{
+        width: 98%;       
+    } 
+    article,
+    .nodata,
+    .headline{
+        width: 95%;
+    }
+    
+
+}
+@media (max-width:600px){
+    main{
+        top: 54px;
+    }
+    .image{
+        width: 100%;
+        margin: 28px 0;
+    }
+    article{
+        width: 100%;
+        padding:0 10px;
+        box-sizing:border-box
+    }
+    .bookingcontent{
+        flex-wrap: wrap;
+        height: auto;
+        margin: 0;
+    }
+    .bookingtext{
+        margin-left: 0;
+        width: 100%;
+        height: 200px;
+    }
+    article>img{
+        top:auto;
+        right: 10px;
+        bottom: 70px;
+
+    }
+}
+
+
+
+
+
+
+

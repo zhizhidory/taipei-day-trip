@@ -125,7 +125,7 @@ header{
     cursor: pointer;
 }
 .backgroud{
-    background-image: url(welcome.png);
+    background-image: url(/static/image/welcome.png);
     height: 320px;
     background-repeat: no-repeat;
     background-size: cover;

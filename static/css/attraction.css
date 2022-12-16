@@ -324,6 +324,7 @@ input[type="radio"]:checked+label:after {
     font-size: 16px;
     font-weight: 500;
 }
+
 .bookingButton{
     background-color: #448899;
     color: #fff;
@@ -336,9 +337,10 @@ input[type="radio"]:checked+label:after {
     height: 36px;
     cursor: pointer;
 }
-.bookingButton:hover{
-    background-color: #236778;
+.bookingButton:disabled{
+    background-color: #6a787c;
 }
+
 footer{
     width: 100%;
     display: flex;

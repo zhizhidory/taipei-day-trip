@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8"/>
+        <title>台北一日遊-景點預定</title>  
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/booking.css') }}" /> 
+    </head>
+    <body>
+        <header>
+            <div class="nav">
+                <div class="leftnav">台北一日遊</div>
+                <div class="rightnav">
+                    <button>預定行程</button>
+                    <button id="signout">登出系統</button>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="headline">您好，<span id="name"></span>，待預定的行程如下:</div>
+            <div class="nodata"></div>
+            <article>
+                <img src="static\image\icon\icon_delete.png">
+                <section class="bookingcontent">
+                    <div class="image"><img /></div>
+                    <div class="bookingtext">
+                        <div class="title">台北一日遊:
+                        <span class="name"></span>
+                        </div>
+                        <div class="booking_detail" id="booking_date">日期:
+                            <span></span>
+                        </div>
+                        <div class="booking_detail" id="booking_time">時間:
+                            <span></span>
+                        </div>
+                        <div class="booking_detail" id="booking_price">費用:
+                            <span></span>
+                        </div>
+                        <div class="booking_detail" id="booking_location">地點:
+                            <span></span>
+                        </div>
+                    </div>
+                </section>
+                <hr/>
+            </article>
+            <article >
+                <diV class="user_information">您的聯絡資訊</diV>
+                <label>聯絡姓名
+                    <input type="text" id="name">
+                </label>
+                <label>聯絡信箱
+                    <input type="email">
+                </label>
+                <label>手機號碼
+                    <input type="text">
+                </label>
+                <div class="notice">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
+                <hr/>
+            </article>
+            <article>
+                <diV class="user_information">信用卡付款資料</diV>
+                <label>卡片號碼
+                    <input id="CardNumber" type="tel" pattern="\d*" maxlength="19" placeholder="**** **** **** ****" onkeyup="formatCardNumber()">
+                </label>
+                <label>過期日期
+                    <input id="CardExp"type="tel"  maxlength="7" placeholder="MM / YY" onkeyup="formatCardExp()">
+                </label>
+                <label>驗證密碼
+                    <input type="text" maxlength="3" placeholder="CVV">
+                </label>
+                <hr/>
+            </article>
+            <article class="confirmOrder">
+                <div class="total_price">總價:<span></span></div>
+                <button >確認訂購並付款</button>
+            </article>
+        </main>
+        <footer class="footer_nodata">
+            <div>COPYRIGHT © 2021 台北一日遊</div>
+        </footer>
+        <script>
+            fetch("/api/user/auth",{credentials: "include"}
+            ).then(response => response.json()).then(function(result){
+                if(result.data){
+                    let {name, email}=result.data
+                    document.querySelectorAll("#name").forEach(function(element, index){
+                        if(index===0){element.textContent=name;}
+                        else{element.value=name;}
+                    })
+                    inputemail=document.querySelector("input[type='email']").value=email;
+                } else{
+                    location.href="/"
+                }
+                return fetch("/api/booking")
+            }).then(response => response.json()).then(function(result){
+                if (result.data){
+                    let {date, time, price, attraction}=result.data;
+                    let{name, address, image}=attraction;
+                    if (time==="morning"){
+                        time = "早上9點到下午4點";
+                    } else {
+                        time = "下午兩點到晚上7點";
+                    };
+                    price = "新台幣"+price+"元"
+                    let data=[name, date, time, price, address]
+                    document.querySelector(".image>img").src=image
+                    emptyspans=document.querySelectorAll(".bookingtext span")
+                    emptyspans.forEach(function (span, index) {span.textContent=data[index]
+                    });
+                    document.querySelector(".total_price>span").textContent=price
+                    document.querySelectorAll("article").forEach(element => { element.style.display="flex" });
+                    document.querySelector(".nodata").style.display="none"
+                    document.querySelector("footer").className=""
+                } 
+            })
+            document.querySelectorAll("article").forEach(element => { element.style.display="none" });
+            document.querySelector(".nodata").textContent="目前無任何待預定行程"
+            document.querySelector("footer").className="footer_nodata"
+
+            const CardNumber=document.querySelector("#CardNumber");
+            function formatCardNumber(){                 
+                let x = document.getElementById("CardNumber");
+                let index = x.value.lastIndexOf("-");
+                let input = x.value
+                let number = x.value.substr(index + 1);
+                if (number.length==4 && input.length < 19){
+                    x.value = input + "-";  
+                }};
+            const CardExp=document.querySelector("#CardExp");
+            function formatCardExp(){
+                let x = document.getElementById("CardExp");
+                let index = x.value.lastIndexOf(" / ");
+                let number = x.value.substr(index + 1);
+                if (number.length ==2){
+                    x.value = x.value + " / ";  
+                }};
+            const BacktoHome=document.querySelector(".leftnav")
+            BacktoHome.addEventListener("click",function(){
+                location.href="/"
+            })
+            document.querySelector("article>img").addEventListener("click",function(){
+                fetch("api/booking",{
+                    method:"DELETE",
+                }).then(function(response){return response.json();}).then(function(response){
+                    if(response.ok){
+                        location.reload()
+                    }
+                })
+            })
+            const signout=document.querySelector("#signout")
+            signout.addEventListener("click",function(e){
+                fetch("/api/user/auth",{method:"DELETE"}).then(function(response){
+                    return response.json();}).then(function(data){
+                    location.reload();
+                })
+            })
+        </script>
+</html>
