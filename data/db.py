@@ -1,11 +1,13 @@
 import json
 import mysql.connector
+import os
+import setting
 
 db = mysql.connector.connect(
-    host="localhost",           
-    database="taipei_trip",         
-    user="root",                
-    password="5244"  
+	"host":os.getenv("host"),
+	"user":os.getenv("user"),
+	"password":os.getenv("password"),
+	"database":os.getenv("database")  
 )
 cursor = db.cursor()
 
