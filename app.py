@@ -25,11 +25,13 @@ def booking():
 def thankyou():
 	return render_template("thankyou.html")
 
+
 app.register_blueprint(attractions)
 
 app.register_blueprint(user)
 
 app.register_blueprint(booking_blueprint)
+
 
 
 
