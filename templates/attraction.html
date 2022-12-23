@@ -132,7 +132,8 @@
                         "attractionId": attractionId,
                         "date": date.value,
                         "time": document.querySelector("input[name='time']:checked").id,
-                        "price": price
+                        "price": price,
+                        "memberId":id
                     }
                     fetch("/api/booking", {
                         method:"POST",

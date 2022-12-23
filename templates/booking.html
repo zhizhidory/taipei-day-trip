@@ -52,37 +52,42 @@
                     <input type="email">
                 </label>
                 <label>手機號碼
-                    <input type="text">
+                    <input type="text"  id="phone" placeholder="09********" maxlength="10">
                 </label>
                 <div class="notice">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
                 <hr/>
             </article>
             <article>
                 <diV class="user_information">信用卡付款資料</diV>
-                <label>卡片號碼
-                    <input id="CardNumber" type="tel" pattern="\d*" maxlength="19" placeholder="**** **** **** ****" onkeyup="formatCardNumber()">
-                </label>
-                <label>過期日期
-                    <input id="CardExp"type="tel"  maxlength="7" placeholder="MM / YY" onkeyup="formatCardExp()">
-                </label>
-                <label>驗證密碼
-                    <input type="text" maxlength="3" placeholder="CVV">
-                </label>
+                <div class="credit-card">
+                    <label>卡片號碼</label>
+                    <div class="tpfield" id="card-number"></div>
+                </div>
+                <div class="credit-card">
+                    <label>過期日期</label>
+                    <div class="tpfield" id="card-expiration-date"></div>                
+                </div>
+                <div class="credit-card">
+                    <label>驗證密碼</label>
+                    <div class="tpfield" id="card-ccv"></div>
+                </div>
                 <hr/>
             </article>
             <article class="confirmOrder">
                 <div class="total_price">總價:<span></span></div>
-                <button >確認訂購並付款</button>
+                <button  disabled class="submitButton">確認訂購並付款</button>
             </article>
         </main>
         <footer class="footer_nodata">
             <div>COPYRIGHT © 2021 台北一日遊</div>
         </footer>
+        <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
         <script>
+            let order, id
             fetch("/api/user/auth",{credentials: "include"}
             ).then(response => response.json()).then(function(result){
                 if(result.data){
-                    let {name, email}=result.data
+                    ({name, email, id}=result.data)
                     document.querySelectorAll("#name").forEach(function(element, index){
                         if(index===0){element.textContent=name;}
                         else{element.value=name;}
@@ -91,9 +96,10 @@
                 } else{
                     location.href="/"
                 }
-                return fetch("/api/booking")
+                return fetch("/api/booking",{ credentials: "include",headers:{"Content-Type": "application/json"}})
             }).then(response => response.json()).then(function(result){
-                if (result.data){
+                order=result.data
+                 if (result.data){
                     let {date, time, price, attraction}=result.data;
                     let{name, address, image}=attraction;
                     if (time==="morning"){
@@ -117,23 +123,6 @@
             document.querySelector(".nodata").textContent="目前無任何待預定行程"
             document.querySelector("footer").className="footer_nodata"
 
-            const CardNumber=document.querySelector("#CardNumber");
-            function formatCardNumber(){                 
-                let x = document.getElementById("CardNumber");
-                let index = x.value.lastIndexOf("-");
-                let input = x.value
-                let number = x.value.substr(index + 1);
-                if (number.length==4 && input.length < 19){
-                    x.value = input + "-";  
-                }};
-            const CardExp=document.querySelector("#CardExp");
-            function formatCardExp(){
-                let x = document.getElementById("CardExp");
-                let index = x.value.lastIndexOf(" / ");
-                let number = x.value.substr(index + 1);
-                if (number.length ==2){
-                    x.value = x.value + " / ";  
-                }};
             const BacktoHome=document.querySelector(".leftnav")
             BacktoHome.addEventListener("click",function(){
                 location.href="/"
@@ -141,6 +130,8 @@
             document.querySelector("article>img").addEventListener("click",function(){
                 fetch("api/booking",{
                     method:"DELETE",
+                    headers:{"Content-Type": "application/json"},
+                    body:JSON.stringify({memberId:id})
                 }).then(function(response){return response.json();}).then(function(response){
                     if(response.ok){
                         location.reload()
@@ -154,5 +145,85 @@
                     location.reload();
                 })
             })
+            TPDirect.setupSDK(126896,'app_T1p0CM8fV7bUhCSYXuQQCpECIAi6oGEYJahmZ8Je4knkNCZExz64Fh9IeIVU', 'sandbox')
+            TPDirect.card.setup({
+                fields :{
+                    number: {
+                        element: '#card-number',
+                        placeholder: '**** ***** **** ****'
+                    },
+                    expirationDate: {
+                        element: '#card-expiration-date',
+                        placeholder: 'MM / YY'
+                    },
+                    ccv: {
+                        element: '#card-ccv',
+                        placeholder: 'CCV'
+                    }
+                },
+                styles: {
+                    'input': {
+                        'color': 'gray'
+                    },
+                    ':focus': {
+                        'color': 'gray'
+                    },
+                    '.valid': {
+                        'color': 'green'
+                    },
+                    '.invalid': {
+                        'color': 'orange'
+                    },
+                },
+            })
+            const phone=document.querySelector("#phone")
+            const submitButton=document.querySelector(".submitButton")
+            TPDirect.card.onUpdate(function (update) {
+                if (update.canGetPrime && (phone.value).length ===10) {
+                    submitButton.removeAttribute('disabled')
+                } else {
+                    submitButton.setAttribute('disabled', true)
+                }
+            })
+            phone.addEventListener("keyup",function(){
+                const tappayStatus = TPDirect.card.getTappayFieldsStatus()
+                if (tappayStatus.canGetPrime === true && (phone.value).length ===10) {
+                    submitButton.removeAttribute('disabled')
+                } else{
+                    submitButton.setAttribute('disabled', true)
+                 }
+            })
+
+
+            submitButton.addEventListener("click", onSubmit)
+            function onSubmit(event) {
+                event.preventDefault()
+                TPDirect.card.getPrime((result) => {
+                    if (result.status !== 0) {
+                        console.log(result.msg)
+                        return
+                    }
+                    let cardholderinfo=document.querySelectorAll("label>input")
+                    let [name, email, phone_number]=cardholderinfo
+                    let{price, ...trip}=order
+                    order = { "price":price, trip,                       
+                             "contact": { "name": name.value, "email": email.value, "phone": phone_number.value}
+                            }
+                    url="/api/orders"
+                    let data={ "prime": result.card.prime, order}
+                    fetch(url,{
+                        method:"POST",
+                        credentials: "include",
+                        headers:{"Content-Type": "application/json", },
+                        body:JSON.stringify(data)
+                    }).then(response =>response.json()).then(function(result){
+                        if (result.data){
+                            location.href="/thankyou?number="+result.data.number
+                        }else{
+                            console.log(result)
+                        }
+                    })
+                })
+            }
         </script>
 </html>

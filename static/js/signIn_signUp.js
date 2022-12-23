@@ -1,6 +1,7 @@
 const signout=document.querySelector("#signout")
 signout.style.display="none"
 const signUpIn=document.querySelector("#signUpIn")
+let id
 // 檢查登入狀態
 fetch("/api/user/auth",{
     method:"GET",
@@ -8,6 +9,7 @@ fetch("/api/user/auth",{
     headers:{"Content-Type": "application/json"}
 }).then(function(response){return response.json()}).then(function(result){
     if (result.data){
+        ({id}=result.data)
         signout.style.display="block"
         signUpIn.style.display="none"
     }

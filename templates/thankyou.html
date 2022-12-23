@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8"/>
+        <title>台北一日遊-付款</title>  
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/thankyou.css') }}" /> 
+    </head>
+    <body>
+        <header >
+            <div class="nav">
+                <div class="leftnav">台北一日遊</div>
+                <div class="rightnav">
+                    <button id="booking">預定行程</button>
+                    <button id="signout">登出系統</button>
+                </div>
+            </div>
+        </header>
+        <main>
+            <article>
+                <div><img src="static\image\icon\icon_finished.png"/></div>
+                <div class="title">
+                    行程預定成功
+                </div>
+                <div class="ordernumber">
+                    訂單編號:<span></span>
+                </div>
+                <div>請記住此編號，或前往會員中心查詢此訂單</div>
+            </article>
+        </main> 
+        <footer>
+            <div>COPYRIGHT © 2021 台北一日遊</div>
+        </footer>
+
+        <script>
+            fetch("/api/user/auth",{
+                method:"GET",
+                credentials: "include",
+                headers:{"Content-Type": "application/json"}
+            }).then(function(response){return response.json()}).then(function(result){
+                if (!result.data) {
+                     return location.href="/"
+                } 
+                return shownumber()               
+            })
+            function shownumber(){
+                const number=(location.search).replace("?number=", "")
+                document.querySelector(".ordernumber>span").textContent=number
+            }
+            const signout=document.querySelector("#signout")
+            signout.addEventListener("click",function(e){
+                fetch("/api/user/auth",{method:"DELETE"}).then(function(response){
+                return response.json();}).then(function(data){
+                    location.reload();
+                })
+            })
+            const BacktoHome=document.querySelector(".leftnav")
+            BacktoHome.addEventListener("click",function(){
+                location.href="/"
+            })
+
+            document.querySelector("#booking").addEventListener("click", function(){
+                if(document.cookie){
+                    location.href="/booking"
+                }
+            })
+        </script>   
+    </body>
+</html>
