@@ -20,10 +20,10 @@ def createorders():
     attraction=trip["attraction"]
     number=time.strftime("%Y%m%d%H%M%S", time.gmtime())
     url="https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
-    header={"Content-Type": "application/json", "x-api-key": "partner_J4NRfnnVPUhxPt7sqyD8CjYec6E8LdlXu29ySzU7On96wFQdIA07HS0E"}
+    header={"Content-Type": "application/json", "x-api-key": partnerkey}
     tapPayData={
         "prime":prime,
-        "partner_key": "partner_J4NRfnnVPUhxPt7sqyD8CjYec6E8LdlXu29ySzU7On96wFQdIA07HS0E",
+        "partner_key": partnerkey,
         "merchant_id": "Flora0408_CTBC",
         "details":"TapPay Test",
         "amount": order["price"],
