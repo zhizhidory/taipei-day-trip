@@ -3,13 +3,13 @@ from flask_cors import CORS
 from api.attractions import attractions
 from api.user import user
 from api.booking import booking_blueprint
+from api.order import order_blueprint
 
 app=Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
-
 
 # Pages
 @app.route("/")
@@ -32,7 +32,7 @@ app.register_blueprint(user)
 
 app.register_blueprint(booking_blueprint)
 
-
+app.register_blueprint(order_blueprint)
 
 
 if __name__ =="__main__":

@@ -1,0 +1,96 @@
+html, 
+body{
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+header{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    height: 54px;
+    width: 100%;
+    align-items: center;
+    background-color: #fff;
+    margin: 0 auto;
+    z-index: 3;
+}
+.nav{
+    display:flex;
+    width: 1200px;
+    height: 34px;
+}
+.leftnav{
+    height: 34px;
+    font-size: 30px;
+    color: #448899;
+    font-weight: 700;
+    cursor: pointer;
+}
+.rightnav{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex:auto;
+}
+.rightnav>button{
+    color: #666666;
+    border: 0;
+    background-color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+main{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 64px;
+    height: 200px;
+}
+article{
+    text-align: center;
+    color: #666666;
+}
+.title{
+    font-size: 24px;
+    font-weight: 700;
+    padding: 10px;
+}
+.ordernumber{
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 10px;
+}
+
+footer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #757575;
+    min-height: 104px;
+    height: calc(100% - 264px) ;
+    top:64px;
+    position: relative;
+} 
+
+footer>div{
+    padding: 20px;
+    font-weight: 700;
+    color: #fff;
+}
+
+@media (max-width:1200px){
+    .nav{margin: 10px;}      
+} 
+
+
+
+
+
+
+
+
+

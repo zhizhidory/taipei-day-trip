@@ -5,6 +5,8 @@ load_dotenv()
 
 jwtkey=os.getenv("key")
 
+partnerkey=os.getenv("partnerkey")
+
 dbconfig={
 	"host":os.getenv("host"),
 	"user":os.getenv("user"),

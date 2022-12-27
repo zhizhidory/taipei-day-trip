@@ -42,7 +42,6 @@ def auth():
 			if cookie :
 				token=cookie["token"]
 				data=jwt.decode(token,jwtkey,algorithms='HS256')
-				name=data["name"]
 				result["data"]=data
 				return result
 			return {"data":None}

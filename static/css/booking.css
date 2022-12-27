@@ -2,6 +2,7 @@ html,
 body{
     padding: 0;
     margin: 0;
+    height: 100%;
 }
 header{
     position: fixed;
@@ -56,6 +57,7 @@ main{
     color: #666666;
     font-weight: 700;
     font-size: 19px;
+    height: 20px;
 }
 .nodata{
     margin-top: 30px;
@@ -122,12 +124,24 @@ hr{
     color: #666666;
     margin-bottom: 30px;
 }
-label{
+article>label{
     margin-bottom: 15px;
     font-size: 16px;
     font-weight: 500;
     color: #666666;
 }
+.credit-card>label{
+    font-size: 16px;
+    font-weight: 500;
+    color: #666666;
+    margin-right: 5px;
+}
+.credit-card{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.tpfield,
 input{
     height: 38px;
     width: 200px;
@@ -164,6 +178,12 @@ input{
     height: 36px;
     cursor: pointer;
 }
+.confirmOrder>button:disabled{
+    background-color: #6a787c;
+}
+.tappay-field-focus {
+    border:2px solid black;
+}
 footer{
     width: 100%;
     display: flex;
@@ -177,7 +197,7 @@ footer{
 } 
 .footer_nodata{
     padding-top: 45px;
-    height: 865px;
+    height: calc(100% - 279px);
     align-items: flex-start;
 }
 footer>div{
@@ -201,9 +221,6 @@ footer>div{
 
 }
 @media (max-width:600px){
-    /* main{
-        top: 54px;
-    } */
     .image{
         width: 100%;
         margin: 28px 0;
@@ -227,7 +244,6 @@ footer>div{
         top:auto;
         right: 10px;
         bottom: 70px;
-
     }
 }
 
