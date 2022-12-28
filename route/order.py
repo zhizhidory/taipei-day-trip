@@ -1,8 +1,6 @@
 from flask import *
-from connectionDatabase import*
-import time, jwt
-import requests
-import json
+from config import*
+import time, jwt, requests, json
 
 order_blueprint = Blueprint("order",__name__)
 

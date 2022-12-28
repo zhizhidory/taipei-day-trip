@@ -1,7 +1,6 @@
 const signout=document.querySelector("#signout")
 signout.style.display="none"
 const signUpIn=document.querySelector("#signUpIn")
-let id
 // 檢查登入狀態
 fetch("/api/user/auth",{
     method:"GET",
@@ -110,4 +109,12 @@ signpages.forEach( closepage => {closepage.addEventListener("click", function(e)
 signUpIn.addEventListener("click", function(){
     signIn.style.display="flex"
     mask.style.display="block"
+})
+document.querySelector("#booking").addEventListener("click", function(){
+    if(document.cookie){
+        location.href="/booking"
+    }else{
+        signIn.style.display="flex"
+        mask.style.display="block"
+    }
 })

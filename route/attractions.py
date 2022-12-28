@@ -1,9 +1,7 @@
 from flask import *
-from connectionDatabase import*
+from config import*
 
 attractions = Blueprint("attractions",__name__)
-
-
 
 @attractions.route("/api/attraction/<id>", methods=["GET"])
 def attractionID_api(id):

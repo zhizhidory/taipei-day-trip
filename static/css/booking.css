@@ -4,45 +4,6 @@ body{
     margin: 0;
     height: 100%;
 }
-header{
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    height: 54px;
-    width: 100%;
-    align-items: center;
-    background-color: #fff;
-    margin: 0 auto;
-    z-index: 3;
-}
-.nav{
-    display:flex;
-    width: 1200px;
-    height: 34px;
-}
-.leftnav{
-    height: 34px;
-    font-size: 30px;
-    color: #448899;
-    font-weight: 700;
-    cursor: pointer;
-}
-.rightnav{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex:auto;
-}
-.rightnav>button{
-    color: #666666;
-    border: 0;
-    background-color: #fff;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-}
 main{
     position: relative;
     top:94px;
@@ -70,7 +31,6 @@ article{
     width: 1000px;
     display: flex;
     flex-direction: column;
-
 }
 .image{
     width: 250px;
@@ -184,31 +144,7 @@ input{
 .tappay-field-focus {
     border:2px solid black;
 }
-footer{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #757575;
-    min-height: 104px;
-    margin-top: 60px;
-    top:94px;
-    position: relative;
-} 
-.footer_nodata{
-    padding-top: 45px;
-    height: calc(100% - 279px);
-    align-items: flex-start;
-}
-footer>div{
-    font-weight: 700;
-    color: #fff;
-}
-
-
-
 @media (max-width:1200px){
-    .nav{margin: 10px;}
     hr{
         width: 98%;       
     } 
@@ -217,8 +153,6 @@ footer>div{
     .headline{
         width: 95%;
     }
-    
-
 }
 @media (max-width:600px){
     .image{
