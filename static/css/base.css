@@ -136,7 +136,7 @@ footer>div{
 }
 .footer_nodata{
     padding-top: 45px;
-    height: calc(100% - 279px);
+    height: calc(100% - 319px);
     align-items: flex-start;
 }
 .footer_thankyou{
