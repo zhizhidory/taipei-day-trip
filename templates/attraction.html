@@ -11,7 +11,12 @@
         <main>
             <article>
                 <section class="sectioncontent">
-                    <div class="imgcontainer">
+                    <div id="imgloading" class="imgloading">
+                        <div id="loader-container" >
+                            <div id="loadingText">loading</div>
+                        </div>
+                    </div>
+                    <div class="imgcontainer" id="imgloaded">
                         <img class="prev"  src="{{ url_for('static', filename='/image/Button/btn_leftArrow.png') }}"/>
                         <img class="next"  src="{{ url_for('static', filename='/image/Button/btn_rightArrow.png') }}"/>
                         <div class="dotcontainer"></div>

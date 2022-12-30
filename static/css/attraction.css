@@ -246,6 +246,7 @@ input[type="radio"]:checked+label:after {
     .sectioncontent{
         width: 98%;       
     } 
+    #imgloading,
     .imgcontainer{
         width: 50%;;
     }
@@ -258,6 +259,7 @@ input[type="radio"]:checked+label:after {
         flex-wrap: wrap;
         height: auto;
     }
+    #imgloading,
     .imgcontainer{
         width: 100%;
         height: 350px;

@@ -109,5 +109,20 @@ fetch(url).then(function(response){return response.json();
         slides[slideIndex - 1].style.display = "block";
         dots[slideIndex - 1].className = "activedot";
     }
-    return loaded()
+    loaded(imgloaded)
 })
+let i=0
+const imgloaded=function (){
+    const images=document.querySelectorAll(".img")
+    images.forEach(image =>{
+        const img=new Image()
+        img.src=image.src
+        img.addEventListener("load",()=>{
+            i+=1
+            if(images.length === i){
+                document.querySelector("#imgloaded").style.display="flex"
+                document.querySelector("#imgloading").style.display="none"
+            }
+        })
+    })
+}

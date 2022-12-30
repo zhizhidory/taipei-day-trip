@@ -55,10 +55,12 @@
         </div>
         <script src="{{ url_for('static', filename='/js/navbar.js') }}"></script>
         <script>
-            const loaded=function () {
+            const loaded=function (callback) {
                 document.getElementById("loading").style.display = "none";
                 document.getElementById("loaded").style.display = "block";
-            }
+                if (typeof callback === "function") {
+                    callback()
+            }}
         </script>
         {% block script %}{% endblock %}
     </body>
