@@ -1,26 +1,22 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta charset="utf-8"/>
-        <title>台北一日遊-景點介紹</title>  
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/attraction.css') }}" /> 
-    </head>
-    <body>
-        <header>
-            <div class="nav">
-                <div class="leftnav">台北一日遊</a></div>
-                <div class="rightnav">
-                    <button id="booking">預定行程</button>
-                    <button id="signUpIn">登入/註冊</button>
-                    <button id="signout">登出系統</button>
-                </div>
-            </div>
-        </header>
+{% extends "base.html" %}
+
+{% block title %}
+    <title></title>
+{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/attraction.css') }}" />
+{% endblock %}
+{% block main %}
         <main>
             <article>
                 <section class="sectioncontent">
-                    <div class="imgcontainer">
+                    <div id="imgloading" class="imgloading">
+                        <div id="loader-container" >
+                            <div id="loadingText">loading</div>
+                        </div>
+                    </div>
+                    <div class="imgcontainer" id="imgloaded">
                         <img class="prev"  src="{{ url_for('static', filename='/image/Button/btn_leftArrow.png') }}"/>
                         <img class="next"  src="{{ url_for('static', filename='/image/Button/btn_rightArrow.png') }}"/>
                         <div class="dotcontainer"></div>
@@ -31,7 +27,7 @@
                         <div class="booking">
                             <div class="boldtext">訂購導覽行程</div>
                             <div class="bookingtext">以此景點為中心的一日行程，帶您探索城市角落故事</div>
-                            <div class="boldtext">選擇日期:&nbsp;&nbsp;<input type="date" id="date"></div>
+                            <div class="boldtext">選擇日期:&nbsp;&nbsp;<input type="date" id="date" ></div>
                             <div class="boldtext" id="timechoose">選擇時間:
                                 <div class="radio">
                                     <input type="radio" name="time" id="morning" checked="checked"/><label for="morning">上半天</label>
@@ -62,152 +58,7 @@
                 </div>
             </article>
         </main>
-        <footer>
-            <div>COPYRIGHT © 2021 台北一日遊</div>
-        </footer>
-        <div class="sign" id="signIn">
-            <div class="decoratorBar"></div>
-            <div class="signText">登入會員帳號</div>
-            <img class="x" src="{{ url_for('static', filename='/image/icon/icon_close.png') }}"/>
-            <input type="email" placeholder="輸入電子信箱" />
-            <input type="password" placeholder="輸入密碼" />
-            <button id="signInButton">登入帳號</button>
-            <div class="dataResponse"></div>
-            <div class="signLine">還沒有帳號？<span id="toSignUp">點此註冊</span></div> 
-        </div>
-        <div class="sign" id="signUp">
-            <div class="decoratorBar"></div>
-            <div class="signText">註冊會員帳號</div>
-            <img class="x" src="{{ url_for('static', filename='/image/icon/icon_close.png') }}"/>
-            <input type="text" placeholder="輸入姓名" id="name" />
-            <input type="email" placeholder="輸入電子信箱" id="email" />
-            <input type="password" placeholder="輸入密碼" id="password" />
-            <button id="signUpButton" >註冊新帳戶</button>
-            <div class="dataResponse"></div>
-            <div class="signLine">已經有帳戶了？<span id="toSignIn">點此登入</span></div> 
-        </div>
-        <div class="mask"></div>
-
-        <script src="/static/js/signIn_signUp.js"></script>
-        <script>
-            document.querySelector("#booking").addEventListener("click", function(){
-                if(document.cookie){
-                    location.href="/booking"
-                }else{
-                    signIn.style.display="flex"
-                    mask.style.display="block"
-                }
-            })
-            const timechoose=document.querySelector("#timechoose")
-            radiomorning=document.querySelector("input[name='time']")
-            timechoose.addEventListener("change", function tapradio(){
-                let morningchecked=radiomorning.checked
-                if(!morningchecked){
-                   document.getElementById("price2000").hidden=true
-                   document.getElementById("price2500").hidden=false
-                }
-                else{
-                    document.getElementById("price2000").hidden=false
-                    document.getElementById("price2500").hidden=true
-
-                }})
-            const bookingButton=document.querySelector(".bookingButton")
-            const date=document.querySelector("#date")
-            if (!date.value){
-                    bookingButton.disabled=true  
-                }
-            date.addEventListener("change",function(e){
-                if (date.value){
-                    bookingButton.disabled=false  
-                }else {
-                    bookingButton.disabled=true  
-                }
-            })
-            bookingButton.addEventListener("click", function(e){
-                if(document.cookie){
-                    let price=document.querySelector(".cost:not([hidden])");
-                    price=parseInt((price.id).replace("price", ""))
-                    const attractionId=parseInt((location.pathname).replace("/attraction/", ""))
-                    let data={
-                        "attractionId": attractionId,
-                        "date": date.value,
-                        "time": document.querySelector("input[name='time']:checked").id,
-                        "price": price,
-                        "memberId":id
-                    }
-                    fetch("/api/booking", {
-                        method:"POST",
-                        headers:{"Content-Type": "application/json"},
-                        body:JSON.stringify(data)
-                    }).then(function(response){return response.json();})
-                    .then(function(data){
-                        if(data.ok){
-                            location.href="/booking"
-                        }
-                    })
-                }else{
-                    signIn.style.display="flex"
-                    mask.style.display="block"
-                }
-            })
-
-            url="http://3.114.72.60:3000/api"+location.pathname
-            fetch(url).then(function(response){
-                    return response.json();
-            }).then(function(data){
-                const description = document.querySelector(".description")
-                description.textContent = data.data.description
-
-                const address = document.querySelector(".address")
-                address.textContent = data.data.address
-
-                const transport = document.querySelector(".transport")
-                transport.textContent = data.data.transport
-
-                const name = document.querySelector(".name")
-                name.textContent = data.data.name
-
-                const mrtcategory = document.querySelector(".mrtcategory")
-                mrtcategory.textContent = data.data.category+" at "+data.data.mrt
-
-                const imgcontainer = document.querySelector(".imgcontainer")
-                const dotcontainer = document.querySelector(".dotcontainer")
-                const images = data.data.image
-                for(let i = 0; i < images.length; i++) {
-                    let img = document.createElement("img");
-                    img.className = "img";
-                    img.src = data.data.image[i];
-                    imgcontainer.appendChild(img);
-                    let dot = document.createElement("span");
-                    dot.id = "dot";
-                    dotcontainer.appendChild(dot);
-                }
-
-                let slideIndex = 1;
-                showSlides(slideIndex);
-
-                const prev = document.querySelector(".prev")
-                const next = document.querySelector(".next")
-                prev.addEventListener( "click", function(){plusSlides(-1)} )
-                next.addEventListener( "click", function(){plusSlides(1)} )
-                function plusSlides(n) {
-                    showSlides(slideIndex += n);
-                }
-
-                function showSlides(n) {
-                    let slides = document.getElementsByClassName("img");
-                    let dots = document.querySelectorAll("#dot");
-                    if (n > slides.length) { slideIndex = 1 }
-                    if (n < 1) { slideIndex = slides.length }
-                    for (let i = 0; i < slides.length; i++) {
-                        slides[i].style.display = "none";
-                        dots[i].className = "dot";
-                    }
-                    slides[slideIndex - 1].style.display = "block";
-                    dots[slideIndex - 1].className = "activedot";
-                }
-            })
-  
-        </script>   
-    </body>
-</html>
+{% endblock %}       
+{% block script %}
+        <script src="{{ url_for('static', filename='/js/attraction.js') }}"></script>
+{% endblock %}

@@ -1,22 +1,13 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta charset="utf-8"/>
-        <title>台北一日遊</title>  
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/index.css') }}" /> 
-    </head>
-    <body>
-        <header >
-            <div class="nav">
-                <div class="leftnav">台北一日遊</div>
-                <div class="rightnav">
-                    <button id="booking">預定行程</button>
-                    <button id="signUpIn">登入/註冊</button>
-                    <button id="signout">登出系統</button>
-                </div>
-            </div>
-        </header>
+{% extends "base.html" %}
+
+{% block title %}
+    <title>台北一日遊</title>
+{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/index.css') }}" />
+{% endblock %}
+{% block main %}
         <div class="backgroud">
             <div>
                 <div class="text1">輕鬆享受台北一日悠閒</div>
@@ -31,154 +22,7 @@
         <div class="section">
             <div class="container"></div> 
         </div>
-        <footer>
-            <div>COPYRIGHT © 2021 台北一日遊</div>
-        </footer>
-        <div class="sign" id="signIn">
-            <div class="decoratorBar"></div>
-            <div class="signText">登入會員帳號</div>
-            <img class="x" src="{{ url_for('static', filename='/image/icon/icon_close.png') }}"/>
-            <input type="email" placeholder="輸入電子信箱" />
-            <input type="password" placeholder="輸入密碼" />
-            <button id="signInButton">登入帳號</button>
-            <div class="dataResponse"></div>            
-            <div class="signLine">還沒有帳號？<span id="toSignUp">點此註冊</span></div> 
-        </div>
-        <div class="sign" id="signUp">
-            <div class="decoratorBar"></div>
-            <div class="signText">註冊會員帳號</div>
-            <img class="x" src="{{ url_for('static', filename='/image/icon/icon_close.png') }}"/>
-            <input type="text" placeholder="輸入姓名" id="name" />
-            <input type="email" placeholder="輸入電子信箱" id="email" />
-            <input type="password" placeholder="輸入密碼" id="password" />
-            <button id="signUpButton" >註冊新帳戶</button>
-            <div class="dataResponse"></div>
-            <div class="signLine">已經有帳戶了？<span id="toSignIn">點此登入</span></div> 
-        </div>
-        <div class="mask"></div>
-
-        <script src="/static/js/signIn_signUp.js"></script>
-        <script>
-            let isLoading=false
-            const input=document.querySelector("input")
-            const searchbar=document.querySelector(".searchbar")
-            const body=document.querySelector("body")
-            const container=document.querySelector(".container");
-            fetch("http://3.114.72.60:3000/api/categories").then(function(response){
-                    return response.json();
-            }).then(function(data){
-                const categories=data.data
-                searchbar.addEventListener("click",tapCategory)
-                for(let n=0;n<categories.length;n++){
-                    let category=document.createElement("div")
-                    category.className="category"
-                    category.textContent=categories[n]
-                    searchbar.appendChild(category)
-                }
-            })
-            function tapCategory(e){
-                input.value=e.target.textContent
-            }
-
-            input.addEventListener("click",tapInput)
-            function tapInput(e){
-                e.stopPropagation()
-                searchbar.style.display="grid"
-            }
-
-            body.addEventListener("click",tapanyway)
-            function tapanyway(e){
-                searchbar.style.display="none"
-            }
-
-            let page=0
-            search = function (){
-                let keyword=document.querySelector("#keyword").value;
-                observer.unobserve(loadingObserver)
-                container.innerHTML="";
-                let data=[]
-                page=0
-                fetch("http://3.114.72.60:3000/api/attractions?page="+page+"&keyword="+keyword).then(function(response){
-                    return response.json();
-                }).then(function(totaldata){
-                data=totaldata.data
-                  if (data && data.length){
-                    page=0 
-                    observer.observe(loadingObserver);            
-                }else{
-                    let nodata=document.createElement("div")
-                    nodata.textContent="沒有符合結果，請重新查詢"
-                    nodata.className="nodata"
-                    container.appendChild(nodata)
-                }})}
-            document.querySelector("#booking").addEventListener("click", function(){
-            if(document.cookie){
-                location.href="/booking"
-            }else{
-                signIn.style.display="flex"
-                mask.style.display="block"
-            }
-            })
-            
-            const loadingObserver = document.querySelector('footer');
-            const fetchdata=function (){
-            let keyword=document.querySelector("#keyword").value;
-            fetch("http://3.114.72.60:3000/api/attractions?page="+page+"&keyword="+keyword).then(function(response){
-                    return response.json();
-            }).then(function(totaldata){
-                let data=totaldata.data
-                for (let i=0; i<data.length ;i++){
-                    http=data[i].image
-                    let box=document.createElement("a")
-                    let name = document.createElement('div');
-                    let nametext = document.createElement('div');
-                    box.className="box";
-                    box.href="/attraction/"+parseInt(data[i].id)                   
-                    box.id="photo"+((page)*12+i);
-                    container.appendChild(box);
-                    let boxid=document.querySelector("#photo"+((page)*12+i));
-                    let img = document.createElement('img');
-                    img.src=http[0];
-                    boxid.appendChild(img);
-                    nametext.textContent=data[i].name
-                    name.className="name";
-                    nametext.className="nametext"
-                    boxid.appendChild(name)
-                    name.appendChild(nametext)
-
-                    let titlei = document.createElement('div');
-                    titlei.className="title";
-                    titlei.id="title"+((page)*12+i);
-                    boxid.appendChild(titlei);
-
-                    let titletext=document.querySelector("#title"+((page)*12+i))
-                    let text=document.createElement("div")
-                    let text2=document.createElement("div")
-                    text.className="titletext"
-                    text2.className="titletext"
-                    text.textContent=data[i].mrt;
-                    text2.textContent=data[i].category;
-                    titletext.appendChild(text);
-                    titletext.appendChild(text2);
-                }
-                    isLoading=false  
-                    page=totaldata.nextPage;  
-            }
-            )};
-
-            const options = {
-            rootMargin: '0px 0px 200px 0px',
-            threshold: 0.5
-            }
-
-            const callback = ([entry]) => {
-            if (entry && entry.isIntersecting && page!=null && !isLoading ) {
-                isLoading=true
-                fetchdata()
-            }}
-
-            let observer = new IntersectionObserver(callback, options)
-            observer.observe(loadingObserver);
-        </script>   
-    </body>
-</html>
+{% endblock %}
+{% block script %}
+        <script src="{{ url_for('static', filename='/js/index.js') }}"></script>   
+{% endblock %}

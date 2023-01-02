@@ -1,8 +1,6 @@
 from flask import *
-import jwt
-import time
-from connectionDatabase import*
-
+import jwt, time
+from config import*
 
 user = Blueprint("user",__name__)
 

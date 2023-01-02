@@ -1,23 +1,15 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta charset="utf-8"/>
-        <title>台北一日遊-景點預定</title>  
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/booking.css') }}" /> 
-    </head>
-    <body>
-        <header>
-            <div class="nav">
-                <div class="leftnav">台北一日遊</div>
-                <div class="rightnav">
-                    <button>預定行程</button>
-                    <button id="signout">登出系統</button>
-                </div>
-            </div>
-        </header>
+{% extends "base.html" %}
+
+{% block title %}
+    <title>景點預定-台北一日遊</title>
+{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/booking.css') }}" />
+{% endblock %}
+{% block main %}
         <main>
-            <div class="headline">您好，<span id="name"></span>，待預定的行程如下:</div>
+            <div class="headline">您好，<span id="username"></span>，待預定的行程如下:</div>
             <div class="nodata"></div>
             <article>
                 <img src="static\image\icon\icon_delete.png">
@@ -46,7 +38,7 @@
             <article >
                 <diV class="user_information">您的聯絡資訊</diV>
                 <label>聯絡姓名
-                    <input type="text" id="name">
+                    <input type="text" id="username">
                 </label>
                 <label>聯絡信箱
                     <input type="email">
@@ -57,7 +49,7 @@
                 <div class="notice">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
                 <hr/>
             </article>
-            <article>
+            <article id="credit-card">
                 <diV class="user_information">信用卡付款資料</diV>
                 <div class="credit-card">
                     <label>卡片號碼</label>
@@ -78,152 +70,8 @@
                 <button  disabled class="submitButton">確認訂購並付款</button>
             </article>
         </main>
-        <footer class="footer_nodata">
-            <div>COPYRIGHT © 2021 台北一日遊</div>
-        </footer>
-        <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
-        <script>
-            let order, id
-            fetch("/api/user/auth",{credentials: "include"}
-            ).then(response => response.json()).then(function(result){
-                if(result.data){
-                    ({name, email, id}=result.data)
-                    document.querySelectorAll("#name").forEach(function(element, index){
-                        if(index===0){element.textContent=name;}
-                        else{element.value=name;}
-                    })
-                    inputemail=document.querySelector("input[type='email']").value=email;
-                } else{
-                    location.href="/"
-                }
-                return fetch("/api/booking",{ credentials: "include",headers:{"Content-Type": "application/json"}})
-            }).then(response => response.json()).then(function(result){
-                order=result.data
-                 if (result.data){
-                    let {date, time, price, attraction}=result.data;
-                    let{name, address, image}=attraction;
-                    if (time==="morning"){
-                        time = "早上9點到下午4點";
-                    } else {
-                        time = "下午兩點到晚上7點";
-                    };
-                    price = "新台幣"+price+"元"
-                    let data=[name, date, time, price, address]
-                    document.querySelector(".image>img").src=image
-                    emptyspans=document.querySelectorAll(".bookingtext span")
-                    emptyspans.forEach(function (span, index) {span.textContent=data[index]
-                    });
-                    document.querySelector(".total_price>span").textContent=price
-                    document.querySelectorAll("article").forEach(element => { element.style.display="flex" });
-                    document.querySelector(".nodata").style.display="none"
-                    document.querySelector("footer").className=""
-                } 
-            })
-            document.querySelectorAll("article").forEach(element => { element.style.display="none" });
-            document.querySelector(".nodata").textContent="目前無任何待預定行程"
-            document.querySelector("footer").className="footer_nodata"
-
-            const BacktoHome=document.querySelector(".leftnav")
-            BacktoHome.addEventListener("click",function(){
-                location.href="/"
-            })
-            document.querySelector("article>img").addEventListener("click",function(){
-                fetch("api/booking",{
-                    method:"DELETE",
-                    headers:{"Content-Type": "application/json"},
-                    body:JSON.stringify({memberId:id})
-                }).then(function(response){return response.json();}).then(function(response){
-                    if(response.ok){
-                        location.reload()
-                    }
-                })
-            })
-            const signout=document.querySelector("#signout")
-            signout.addEventListener("click",function(e){
-                fetch("/api/user/auth",{method:"DELETE"}).then(function(response){
-                    return response.json();}).then(function(data){
-                    location.reload();
-                })
-            })
-            TPDirect.setupSDK(126896,'app_T1p0CM8fV7bUhCSYXuQQCpECIAi6oGEYJahmZ8Je4knkNCZExz64Fh9IeIVU', 'sandbox')
-            TPDirect.card.setup({
-                fields :{
-                    number: {
-                        element: '#card-number',
-                        placeholder: '**** ***** **** ****'
-                    },
-                    expirationDate: {
-                        element: '#card-expiration-date',
-                        placeholder: 'MM / YY'
-                    },
-                    ccv: {
-                        element: '#card-ccv',
-                        placeholder: 'CCV'
-                    }
-                },
-                styles: {
-                    'input': {
-                        'color': 'gray'
-                    },
-                    ':focus': {
-                        'color': 'gray'
-                    },
-                    '.valid': {
-                        'color': 'green'
-                    },
-                    '.invalid': {
-                        'color': 'orange'
-                    },
-                },
-            })
-            const phone=document.querySelector("#phone")
-            const submitButton=document.querySelector(".submitButton")
-            TPDirect.card.onUpdate(function (update) {
-                if (update.canGetPrime && (phone.value).length ===10) {
-                    submitButton.removeAttribute('disabled')
-                } else {
-                    submitButton.setAttribute('disabled', true)
-                }
-            })
-            phone.addEventListener("keyup",function(){
-                const tappayStatus = TPDirect.card.getTappayFieldsStatus()
-                if (tappayStatus.canGetPrime === true && (phone.value).length ===10) {
-                    submitButton.removeAttribute('disabled')
-                } else{
-                    submitButton.setAttribute('disabled', true)
-                 }
-            })
-
-
-            submitButton.addEventListener("click", onSubmit)
-            function onSubmit(event) {
-                event.preventDefault()
-                TPDirect.card.getPrime((result) => {
-                    if (result.status !== 0) {
-                        console.log(result.msg)
-                        return
-                    }
-                    let cardholderinfo=document.querySelectorAll("label>input")
-                    let [name, email, phone_number]=cardholderinfo
-                    let{price, ...trip}=order
-                    order = { "price":price, trip,                       
-                             "contact": { "name": name.value, "email": email.value, "phone": phone_number.value}
-                            }
-                    url="/api/orders"
-                    let data={ "prime": result.card.prime, order}
-                    fetch(url,{
-                        method:"POST",
-                        credentials: "include",
-                        headers:{"Content-Type": "application/json", },
-                        body:JSON.stringify(data)
-                    }).then(response =>response.json()).then(function(result){
-                        if (result.data){
-                            location.href="/thankyou?number="+result.data.number
-                        }else{
-                            console.log(result)
-                        }
-                    })
-                })
-            }
-        </script>
-</html>
+{% endblock %}
+{% block script %}
+        <script id="script"></script>
+        <script src="{{ url_for('static', filename='/js/booking.js') }}"></script>
+{% endblock %}

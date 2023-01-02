@@ -1,9 +1,9 @@
 from flask import *
 from flask_cors import CORS
-from api.attractions import attractions
-from api.user import user
-from api.booking import booking_blueprint
-from api.order import order_blueprint
+from route.attractions import attractions
+from route.user import user
+from route.booking import booking_blueprint
+from route.order import order_blueprint
 
 app=Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -36,6 +36,7 @@ app.register_blueprint(order_blueprint)
 
 
 if __name__ =="__main__":
+	app.jinja_env.auto_reload = True 
 	app.run(port=3000, debug=True)
 
 	

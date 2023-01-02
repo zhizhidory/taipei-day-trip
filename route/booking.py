@@ -1,6 +1,6 @@
 from flask import *
 import jwt
-from connectionDatabase import*
+from config import*
 
 booking_blueprint = Blueprint("booking",__name__)
 
